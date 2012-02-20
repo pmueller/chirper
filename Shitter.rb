@@ -1,17 +1,18 @@
 require 'sinatra'
+require 'haml'
 
 get '/' do
-  'Main shitter index'
+  haml :index
 end
 
 get '/login' do
-  'Login to your shitter account'
+  haml :login
 end
 
 get '/register' do
-  'Register a new shitter account'
+  haml :register
 end
 
 get '/search' do
-  'This is the search page'
+  haml :search
 end
