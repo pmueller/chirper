@@ -43,7 +43,7 @@ helpers do
   end
 
   def search_sanity(input)
-    input 
+    input.gsub(/<[^<>]*>/, "")
   end
 end
 
@@ -75,7 +75,8 @@ get '/search' do
   if @search_term.nil?
     @results = []
   else
-    @results = Sheet.filter(:content.like("%#{search_sanity(@search_term)}%"))
+    @search_term = search_sanity(@search_term)
+    @results = Sheet.filter(:content.like("%#{@search_term}%"))
   end
   haml :search
 end
