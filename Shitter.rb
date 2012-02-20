@@ -12,8 +12,19 @@ configure do
   unless db.table_exists?(:sheets)
     db.create_table :sheets do
       primary_key :id
+      Fixnum :user_id 
       String :content
       timestamp :created_at
+    end
+  end
+
+  unless db.table_exists?(:users)
+    db.create_table :users do
+      primary_key :id
+      String :username
+      String :hash
+      String :aboutme
+      String :location
     end
   end
 end
