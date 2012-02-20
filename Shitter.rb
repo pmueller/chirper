@@ -41,6 +41,10 @@ helpers do
   def sanity(input)
     input.gsub(/</, "&lt;").gsub(/>/, "&gt;")
   end
+
+  def search_sanity(input)
+    input 
+  end
 end
 
 get '/' do
@@ -67,6 +71,12 @@ post 'register' do
 end
 
 get '/search' do
+  @search_term = params[:search_term]
+  if @search_term.nil?
+    @results = []
+  else
+    @results = Sheet.filter(:content.like("%#{search_sanity(@search_term)}%"))
+  end
   haml :search
 end
 
