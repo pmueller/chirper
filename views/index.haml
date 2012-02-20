@@ -4,8 +4,11 @@
   %input{ :type => 'submit', :value => 'search the sheet' }
 
 %p Share some sheet with your friends:
-%form{ :action => '/sheets', :method => :post }
-  %input{ :type => 'text_area', :name => 'content' }
+%form{ :action => '/sheets', :method => :post, :id => 'new_sheet' }
+  %input{ :type => 'text_area', :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);" }
+  You have
+  %input{:type => 'text', :readonly => true, :size => 2, :value => 70, :name => 'countdown'}
+  characters left
   %input{ :type => 'submit', :value => 'sheet away' }
 
 - unless @sheets.empty?
@@ -14,3 +17,11 @@
     - @sheets.each do |s|
       %li
         = s.content
+
+:javascript
+    function l(f, c, n) {
+      if(f.value.length > n) {
+        f.value = f.value.substring(0,n);
+      } else {c.value = n-f.value.length;}
+    }
+  ;
