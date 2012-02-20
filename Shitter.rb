@@ -1,9 +1,41 @@
 require 'sinatra'
 require 'haml'
+require 'sequel'
+
+configure do
+  require 'ostruct'
+  S = OpenStruct.new(
+    :cookie_key => 'shitter_cookie'
+  )
+
+  db = Sequel.connect('sqlite://s.db')
+  unless db.table_exists?(:sheets)
+    db.create_table :sheets do
+      primary_key :id
+      String :content
+      timestamp :created_at
+    end
+  end
+end
+
+$LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
+require 'sheet'
+require 'user'
+
+helpers do
+  def logged_in?
+    request.cookies[S.cookie_key] == true
+  end
+
+  def sanity(input)
+    input.gsub(/</, "&lt;").gsub(/>/, "&gt;")
+  end
+end
 
 get '/' do
   # redirect to login if not already logged in
-  redirect to '/login'
+  # redirect to '/login'
+  @sheets = Sheet.reverse_order(:created_at)
   haml :index
 end
 
@@ -41,4 +73,7 @@ end
 
 post '/sheets' do
   # someone made a sheet
+  sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now
+  sheet.save
+  redirect to('/')
 end

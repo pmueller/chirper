@@ -1,2 +1,2 @@
-class Sheet
+class Sheet < Sequel::Model
 end

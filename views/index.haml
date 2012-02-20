@@ -1,1 +1,11 @@
-This is the index of shitter woo
+%p Share some sheet with your friends:
+%form{ :action => '/sheets', :method => :post }
+  %input{ :type => 'text_area', :name => 'content' }
+  %input{ :type => 'submit', :value => 'sheet away' }
+
+- unless @sheets.empty?
+  %p Here is some sheet
+  %ul
+    - @sheets.each do |s|
+      %li
+        = s.content
