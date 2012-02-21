@@ -1,5 +1,5 @@
 class User < Sequel::Model
-  def self.hash(u,p)
+  def self.hash_val(u,p)
     require 'digest/md5'
     Digest::MD5.hexdigest("#{u}#{p}")
   end

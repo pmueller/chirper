@@ -5,8 +5,8 @@ require 'sequel'
 configure do
   require 'ostruct'
   S = OpenStruct.new(
-    :user_cookie_key => 'shitter_user_cookie'
-    :hash_cookie_key => 'shiiter_hash_cookie'
+    :user_cookie_key => 'shitter_user_cookie',
+    :hash_cookie_key => 'shitter_hash_cookie'
   )
 
   db = Sequel.connect('sqlite://s.db')
@@ -42,12 +42,12 @@ helpers do
 
   def login(user)
     response.set_cookie(S.user_cookie_key, :value => user.cookie)
-    response.set_cookie(S.hash_cookie_key, :value => user.hash)
+    response.set_cookie(S.hash_cookie_key, :value => user[:hash])
   end
 
   def logout
-    response.set_cookie(S.user_cookie_key, :value => nil )
-    response.set_cookie(S.hash_cookie_key, :value => nil )
+    response.delete_cookie(S.user_cookie_key)
+    response.delete_cookie(S.hash_cookie_key)
   end
 
   def sanity(input)
@@ -57,11 +57,15 @@ helpers do
   def search_sanity(input)
     input.gsub(/<[^<>]*>/, "")
   end
+
+  def current_user
+    logged_in? ? User[:hash => request.cookies[S.hash_cookie_key]] : nil
+  end
 end
 
 get '/' do
   # redirect to login if not already logged in
-  # redirect to '/login'
+  redirect to '/login' unless logged_in?
   @sheets = Sheet.reverse_order(:created_at)
   haml :index
 end
@@ -73,8 +77,8 @@ end
 post '/login' do
   # log that bitch in
   user = User[:username => params[:username]]
-  redirect to('/login') unless user 
-  if User.hash(params[:username], params[:password]) == user.hash
+  redirect to('/login') unless user
+  if User.hash_val(params[:username], params[:password]) == user[:hash]
     login(user)
     redirect to('/')
   else
@@ -82,20 +86,25 @@ post '/login' do
   end
 end
 
+get '/logout' do
+  logout
+  redirect to('/')
+end
+
 get '/register' do
   haml :register
 end
 
-post 'register' do
+post '/register' do
   params.each_key do |k|
-    params[:k] = sanity(params[:k])
+    params["#{k}"] = sanity(params["#{k}"])
   end
 
   if not params[:password].nil? and params[:password] == params[:password_confirm]
-    hash = User.hash(params[:username], params[:password]) 
-    user = User.new :username => params[:username], :hash => hash, :aboutme => params[:aboutme], :location => params[:location]
+    hash = User.hash_val(params[:username], params[:password]) 
+    user = User.new :username => params[:username], :hash => "#{hash}", :aboutme => params[:aboutme], :location => params[:location]
     if user.save
-      # log the user in
+      login(user)
       redirect to('/')
     else
       redirect to('/register')
