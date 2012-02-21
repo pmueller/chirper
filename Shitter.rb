@@ -21,7 +21,8 @@ configure do
   unless db.table_exists?(:users)
     db.create_table :users do
       primary_key :id
-      String :username
+      boolean :admin
+      String :username, :unique => true
       String :hash
       String :aboutme
       String :location
@@ -35,7 +36,8 @@ require 'user'
 
 helpers do
   def logged_in?
-    request.cookies[S.cookie_key] == true
+    # request.cookies[S.cookie_key] == true
+    false
   end
 
   def sanity(input)

@@ -1,6 +1,17 @@
 %head
 %body
   %h1
-    Shitter
+    %a{ :href => '/'} Shitter
+  %nav
+    -if logged_in?
+      %li
+        %a{ :href => '#' } Username
+      %li
+        %a{ :href => '/logout' } Logout
+    -else
+      %li
+        %a{ :href => '/login' } Login
+      %li
+        %a{ :href => '/register' } Register
   .content
     = yield

@@ -6,7 +6,7 @@
 %p Share some sheet with your friends:
 %form{ :action => '/sheets', :method => :post, :id => 'new_sheet' }
   %input{ :type => 'text_area', :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);" }
-  You have
+  %br
   %input{:type => 'text', :readonly => true, :size => 2, :value => 70, :name => 'countdown'}
   characters left
   %input{ :type => 'submit', :value => 'sheet away' }
