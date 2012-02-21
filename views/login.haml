@@ -1,5 +1,10 @@
-%p
-  Login to your account cause this is a kickass webapp
-Username
-%br
-Password
+%h2
+  Login to your account
+%form{ :action => '/login', :method => :post }
+  Username: 
+  %input{ :type => "text", :name => 'username' }
+  %br
+  Password: 
+  %input{ :type => "password", :name => 'password' }
+  %br
+  %input{ :type => "submit", :value => "Login" }

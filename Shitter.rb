@@ -5,7 +5,8 @@ require 'sequel'
 configure do
   require 'ostruct'
   S = OpenStruct.new(
-    :cookie_key => 'shitter_cookie'
+    :user_cookie_key => 'shitter_user_cookie'
+    :hash_cookie_key => 'shiiter_hash_cookie'
   )
 
   db = Sequel.connect('sqlite://s.db')
@@ -36,8 +37,17 @@ require 'user'
 
 helpers do
   def logged_in?
-    # request.cookies[S.cookie_key] == true
-    false
+    not request.cookies[S.user_cookie_key].nil?
+  end
+
+  def login(user)
+    response.set_cookie(S.user_cookie_key, :value => user.cookie)
+    response.set_cookie(S.hash_cookie_key, :value => user.hash)
+  end
+
+  def logout
+    response.set_cookie(S.user_cookie_key, :value => nil )
+    response.set_cookie(S.hash_cookie_key, :value => nil )
   end
 
   def sanity(input)
@@ -62,6 +72,14 @@ end
 
 post '/login' do
   # log that bitch in
+  user = User[:username => params[:username]]
+  redirect to('/login') unless user 
+  if User.hash(params[:username], params[:password]) == user.hash
+    login(user)
+    redirect to('/')
+  else
+    redirect to('/login')
+  end
 end
 
 get '/register' do
@@ -74,8 +92,7 @@ post 'register' do
   end
 
   if not params[:password].nil? and params[:password] == params[:password_confirm]
-    require 'digest/md5'
-    hash = Digest::MD5("#{params[:username]}#{params[:password]}")
+    hash = User.hash(params[:username], params[:password]) 
     user = User.new :username => params[:username], :hash => hash, :aboutme => params[:aboutme], :location => params[:location]
     if user.save
       # log the user in
@@ -100,7 +117,7 @@ get '/search' do
   haml :search
 end
 
-get '/users/:id' do
+get '/users/:id/edit' do
   # get the user's info... only for that user
 end
 
