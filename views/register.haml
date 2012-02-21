@@ -1,3 +1,22 @@
-%p
-  Register a new account and sheet to all your friends
+%h2
+  Register a new account
 
+%form{ :action => '/register', :method => :post }
+  Username: 
+  %input{ :type => "text", :name => 'username' }
+  %br
+  Password:
+  %input{ :type => "password", :name => 'password' }
+  %br
+  Password confirm:
+  %input{ :type => "password", :name => 'password_confirm' }
+  %br
+  About me:
+  %input{ :type => "text", :name => 'aboutme' }
+  %br
+  Location:
+  %input{ :type => "text", :name => 'location' }
+  %br
+  %input{ :type => "submit", :value => "Register" }
+
+%p Note: your password is safe with us. With our Revolutionary Authentication Engine(c) we never store your password, so there is no chance of it getting stolen!

@@ -21,7 +21,7 @@ configure do
   unless db.table_exists?(:users)
     db.create_table :users do
       primary_key :id
-      boolean :admin
+      boolean :admin, :default => false
       String :username, :unique => true
       String :hash
       String :aboutme
@@ -69,7 +69,24 @@ get '/register' do
 end
 
 post 'register' do
-  #registerrrr the userrrrr
+  params.each_key do |k|
+    params[:k] = sanity(params[:k])
+  end
+
+  if not params[:password].nil? and params[:password] == params[:password_confirm]
+    require 'digest/md5'
+    hash = Digest::MD5("#{params[:username]}#{params[:password]}")
+    user = User.new :username => params[:username], :hash => hash, :aboutme => params[:aboutme], :location => params[:location]
+    if user.save
+      # log the user in
+      redirect to('/')
+    else
+      redirect to('/register')
+    end
+  else
+    redirect to('/register')
+  end
+   
 end
 
 get '/search' do
@@ -81,10 +98,6 @@ get '/search' do
     @results = Sheet.filter(:content.like("%#{@search_term}%"))
   end
   haml :search
-end
-
-post '/users' do
-  # make a user
 end
 
 get '/users/:id' do
