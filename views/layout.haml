@@ -5,7 +5,7 @@
   %nav
     -if logged_in?
       %li
-        %a{ :href => '#' }=current_user[:username]
+        %a{ :href => "/users/#{current_user[:id]}/edit" }=current_user[:username]
       %li
         %a{ :href => '/logout' } Logout
     -else

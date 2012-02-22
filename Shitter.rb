@@ -127,11 +127,27 @@ get '/search' do
 end
 
 get '/users/:id/edit' do
-  # get the user's info... only for that user
+  # protect!
+  @user = User[params[:id]]
+  haml :edit
 end
 
-put '/users/:id' do
-  # edit user info
+post '/users/:id' do
+  #protect!
+  upd = {}
+  [:location, :aboutme].each do |k|
+    upd["#{k}"] = sanity(params["#{k}"])
+  end
+
+  @user = User[params[:id]]
+
+  if not params[:password].empty?
+    upd[:hash] = User.hash_val(@user[:username], params[:password])
+  end
+  @user.update(upd)
+  logout
+  login(@user)
+  redirect to("/users/#{@user[:id]}/edit")
 end
 
 post '/sheets' do

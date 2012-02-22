@@ -1,0 +1,15 @@
+%h2
+  Edit your info
+
+%form{ :action => "/users/#{ @user[:id] }", :method => :post }
+  Password:
+  %input{ :type => "password", :name => 'password' }
+  %br 
+  About me: 
+  %input{ :type => "text", :name => 'aboutme', :value => "#{@user[:aboutme]}"}
+  %br 
+  Location:
+  %input{ :type => "text", :name => 'location', :value => "#{@user[:location]}"}
+  %br 
+  %input{ :type => "submit", :value => "Update" }
+
