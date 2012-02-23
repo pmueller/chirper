@@ -196,11 +196,16 @@ post '/sheets' do
   # someone made a sheet
   must_be_logged_in
   puts params
-  if not params[:attachment].empty? and not params[:attachment] =~ /.*\.(jpg|jpeg)$/i
+  filename = params[:attachment][:filename]
+  if not filename.empty? and not filename =~ /.*\.(jpg|jpeg)$/i
     flash[:notice] = "Failed to sheet. Attachment must be a jpg"
     redirect to('/')
   end
-  sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now, :attachment => params[:attachment]
+  puts params
+  File.open("./public/#{filename}", "w") do |f|
+    f.write(params[:attachment][:tempfile].read)
+  end
+  sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now, :attachment => filename 
   sheet[:user_id] = current_user[:id]
   sheet.save
   flash[:notice] = "Sheet has been made"

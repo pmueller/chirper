@@ -2,7 +2,7 @@
   %input{ :type => 'text_area', :name => 'search_term', :id => "search_bar" }
   %input{ :type => 'submit', :value => 'Search' }
 
-%form{ :action => '/sheets', :method => :post, :id => 'new_sheet' }
+%form{ :action => '/sheets', :method => :post, :id => 'new_sheet', :enctype => 'multipart/form-data'}
   %textarea{ :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);", :id => "sheet_text_field", :rows => 2}
   %br
   Attach image: 
