@@ -1,0 +1,83 @@
+body {
+  font-family: Arial,Helvetica,sans-serif;
+  color:#000000;
+}
+
+section {
+  display:block;
+}
+
+#main {
+  position:relative;
+  margin: 0 auto;
+  width:760px;
+}
+
+#top {
+  background-color:#89A9CD;
+  border-radius: 10px 10px 10px 10px;
+}
+
+a, a:visited {
+  outline: medium none;
+  text-decoration:none;
+}
+
+#main h1{
+  font-weight:bold;
+  font-size:1.9em;
+  font-family: "Myriad Pro","Helvetica Neue",Helvetica,Arial,Sans-Serif;
+  text-shadow: 0 1px 1px black;
+  text-transform:uppercase;
+}
+
+#main h1 a, #main h1 a:visited {
+
+  color:#82370F;
+  font-size:1.9em;
+  margin-left:13px;
+}
+
+nav {
+  display:block;
+  position:absolute;
+  right:0;
+  top:1em;
+}
+
+.clear:after {
+  clear:both;
+  content:".";
+  display:block;
+  height:0;
+  visibility:hidden;
+}
+
+nav li {
+  display:inline;
+  margin:0px;
+  padding:0px;
+}
+
+nav li a, nav li a:visited {
+  color:#000000;
+  display:block;
+  float:left;
+  font-weight:bold;
+  font-size:1.25em;
+  margin: 5px 15px;
+  padding:5px 10px 4px;
+  text-transform:uppercase;
+}
+
+nav li a:hover {
+  color:FFFFFF;
+}
+
+.right {
+  float:right;
+}
+
+.left {
+  float:left;
+}

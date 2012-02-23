@@ -1,7 +1,6 @@
-%p Search sheets:
 %form{ :action => '/search', :method => :get }
   %input{ :type => 'text_area', :name => 'search_term' }
-  %input{ :type => 'submit', :value => 'search the sheet' }
+  %input{ :type => 'submit', :value => 'search' }
 
 %p Share some sheet with your friends:
 %form{ :action => '/sheets', :method => :post, :id => 'new_sheet' }
