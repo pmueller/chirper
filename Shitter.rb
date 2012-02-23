@@ -200,3 +200,8 @@ post '/sheets' do
   flash[:notice] = "Sheet has been made"
   redirect to('/')
 end
+
+get '/pics/*' do
+  @pic = params[:splat].first
+  erb :pic
+end

@@ -2,3 +2,5 @@
 *.swp
 *.db
 *.test
+.DS_Store
+public/*.jpg
