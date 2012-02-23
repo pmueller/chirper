@@ -1,6 +1,10 @@
 require 'sinatra'
 require 'haml'
 require 'sequel'
+require 'rack-flash'
+
+enable :sessions
+use Rack::Flash, :sweep => true
 
 configure do
   require 'ostruct'
@@ -63,11 +67,17 @@ helpers do
   end
 
   def must_be_logged_in
-    redirect to('/login') unless logged_in?
+    if not logged_in?
+      flash[:notice] = "You must be logged in to do this"
+      redirect to('/login')
+    end
   end
 
   def protect(id)
-    redirect to('/') unless id.to_i == current_user[:id]
+    if not id.to_i == current_user[:id]
+      flash[:notice] = "You are not authorized to view this"
+      redirect to('/')
+    end
   end
 end
 
@@ -86,11 +96,16 @@ post '/login' do
   redirect to('/') unless not logged_in?
   # log that bitch in
   user = User[:username => params[:username]]
-  redirect to('/login') unless user
+  if not user
+    flash[:notice] = "Login failed"
+    redirect to('/login')
+  end
   if User.hash_val(params[:username], params[:password]) == user[:hash]
     login(user)
+    flash[:notice] = "You've logged in as #{user[:username]}"
     redirect to('/')
   else
+    flash[:notice] = "Login failed"
     redirect to('/login')
   end
 end
@@ -98,6 +113,7 @@ end
 get '/logout' do
   must_be_logged_in
   logout
+  flash[:notice] = "You have been logged out"
   redirect to('/')
 end
 
@@ -110,16 +126,19 @@ post '/register' do
     params["#{k}"] = sanity(params["#{k}"])
   end
 
-  if not params[:password].nil? and params[:password] == params[:password_confirm]
+  if not params[:password].empty? and params[:password] == params[:password_confirm] and not params[:username].empty?
     hash = User.hash_val(params[:username], params[:password]) 
     user = User.new :username => params[:username], :hash => "#{hash}", :aboutme => params[:aboutme], :location => params[:location]
     if user.save
       login(user)
+      flash[:notice] = "Welcome to Shitter, #{user[:username]}"
       redirect to('/')
     else
+      flash[:notice] = "There was an error registering" 
       redirect to('/register')
     end
   else
+    flash[:notice] = "There was an error registering"
     redirect to('/register')
   end
    
@@ -160,6 +179,7 @@ post '/users/:id' do
   @user.update(upd)
   logout
   login(@user)
+  flash[:notice] = "Values have been updated"
   redirect to("/users/#{@user[:id]}/edit")
 end
 
@@ -169,5 +189,6 @@ post '/sheets' do
   sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now
   sheet[:user_id] = current_user[:id]
   sheet.save
+  flash[:notice] = "Sheet has been made"
   redirect to('/')
 end
