@@ -6,6 +6,14 @@ require 'rack-flash'
 enable :sessions
 use Rack::Flash, :sweep => true
 
+error do
+  'Bummer dude... there was an error'
+end
+
+not_found do
+  'Bummer dude... 404'
+end
+
 configure do
   require 'ostruct'
   S = OpenStruct.new(
