@@ -37,16 +37,16 @@ require 'user'
 
 helpers do
   def logged_in?
-    not request.cookies[S.user_cookie_key].nil?
+    not request.cookies[S.hash_cookie_key].nil?
   end
 
   def login(user)
-    response.set_cookie(S.user_cookie_key, :value => user.cookie)
+    #response.set_cookie(S.user_cookie_key, :value => user.cookie)
     response.set_cookie(S.hash_cookie_key, :value => user[:hash])
   end
 
   def logout
-    response.delete_cookie(S.user_cookie_key)
+    #response.delete_cookie(S.user_cookie_key)
     response.delete_cookie(S.hash_cookie_key)
   end
 
@@ -153,6 +153,7 @@ end
 post '/sheets' do
   # someone made a sheet
   sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now
+  sheet[:user_id] = current_user[:id]
   sheet.save
   redirect to('/')
 end

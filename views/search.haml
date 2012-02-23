@@ -7,5 +7,8 @@
 - else
   %ul
     - @results.each do |r|
-      %li
-        = r.content
+      .sheet.clear
+        .sheet_content
+          = r.content
+        .sheet_user
+          = User[r[:user_id]][:username]

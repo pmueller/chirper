@@ -59,6 +59,18 @@ nav {
   margin-top:20px;
 }
 
+.sheet .sheet_content {
+  word-wrap: break-word;
+  float:left;
+  width:500px !important;
+}
+
+.sheet .sheet_user {
+  font-size:1.2em;
+  font-weight:bold;
+  float:right;
+}
+
 .clear:after {
   clear:both;
   content:".";

@@ -1,19 +1,22 @@
 %form{ :action => '/search', :method => :get, :id => "search" }
   %input{ :type => 'text_area', :name => 'search_term', :id => "search_bar" }
-  %input{ :type => 'submit', :value => 'search' }
+  %input{ :type => 'submit', :value => 'Search' }
 
 %form{ :action => '/sheets', :method => :post, :id => 'new_sheet' }
   %textarea{ :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);", :id => "sheet_text_field", :rows => 2}
   %br
   %input{:type => 'text', :readonly => true, :size => 2, :value => 70, :name => 'countdown'}
   characters left
-  %input{ :type => 'submit', :value => 'make sheet', :class => "button" }
+  %input{ :type => 'submit', :value => 'Sheet it!', :class => "button" }
 
 - unless @sheets.empty?
-  %h2 The sheet river
+  %h2 Sheet river
   - @sheets.each do |s|
-    .sheet
-      = s.content
+    .sheet.clear
+      .sheet_content
+        = s.content
+      .sheet_user
+        = User[s[:user_id]][:username]
 
 :javascript
     function l(f, c, n) {
