@@ -61,11 +61,18 @@ helpers do
   def current_user
     logged_in? ? User[:hash => request.cookies[S.hash_cookie_key]] : nil
   end
+
+  def must_be_logged_in
+    redirect to('/login') unless logged_in?
+  end
+
+  def protect(id)
+    redirect to('/') unless User[id] == current_user
+  end
 end
 
 get '/' do
-  # redirect to login if not already logged in
-  redirect to '/login' unless logged_in?
+  must_be_logged_in
   @sheets = Sheet.reverse_order(:created_at)
   haml :index
 end
@@ -87,6 +94,7 @@ post '/login' do
 end
 
 get '/logout' do
+  must_be_logged_in
   logout
   redirect to('/')
 end
@@ -116,6 +124,7 @@ post '/register' do
 end
 
 get '/search' do
+  must_be_logged_in
   @search_term = params[:search_term]
   if @search_term.nil?
     @results = []
@@ -127,13 +136,15 @@ get '/search' do
 end
 
 get '/users/:id/edit' do
-  # protect!
+  protect(params[:id])
+  must_be_logged_in
   @user = User[params[:id]]
   haml :edit
 end
 
 post '/users/:id' do
-  #protect!
+  protect(params[:id])
+  must_be_logged_in
   upd = {}
   [:location, :aboutme].each do |k|
     upd["#{k}"] = sanity(params["#{k}"])
@@ -152,6 +163,7 @@ end
 
 post '/sheets' do
   # someone made a sheet
+  must_be_logged_in
   sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now
   sheet[:user_id] = current_user[:id]
   sheet.save
