@@ -45,6 +45,20 @@ nav {
   top:1em;
 }
 
+#search {
+  position:absolute;
+  right:30;
+}
+
+#sheet_text_field {
+  width:300px;
+  resize:none;
+}
+
+.content h2 {
+  margin-top:20px;
+}
+
 .clear:after {
   clear:both;
   content:".";
@@ -70,8 +84,26 @@ nav li a, nav li a:visited {
   text-transform:uppercase;
 }
 
+.content {
+  background-color:#84CDB7;
+  border-left:1px solid;
+  border-right:1px solid;
+  border-top:1px solid;
+  border-radius: 10px 10px 0px 0px;
+  padding:20px 20px 20px 20px;
+}
+
 nav li a:hover {
   color:FFFFFF;
+}
+
+#search_bar {
+  border-radius: 5px 5px 5px 5px;
+}
+
+.sheet {
+  padding:15px 15px 15px 15px;
+  border-bottom:1px solid;
 }
 
 .right {
