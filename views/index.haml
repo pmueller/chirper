@@ -5,6 +5,9 @@
 %form{ :action => '/sheets', :method => :post, :id => 'new_sheet' }
   %textarea{ :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);", :id => "sheet_text_field", :rows => 2}
   %br
+  Attach image: 
+  %input{:type => 'file', :accept => 'image/jpg', :name => :attachment }
+  %br
   %input{:type => 'text', :readonly => true, :size => 2, :value => 70, :name => 'countdown'}
   characters left
   %input{ :type => 'submit', :value => 'Sheet it!', :class => "button" }
@@ -17,6 +20,9 @@
         = s.content
       .sheet_user
         = User[s[:user_id]][:username]
+      -if not s[:attachment].empty?
+        .sheet_attachment
+          %a{ :href => "/pics/#{s[:attachment]}" } See attachment
 
 :javascript
     function l(f, c, n) {

@@ -27,6 +27,7 @@ configure do
       primary_key :id
       Fixnum :user_id 
       String :content
+      String :attachment
       timestamp :created_at
     end
   end
@@ -194,7 +195,12 @@ end
 post '/sheets' do
   # someone made a sheet
   must_be_logged_in
-  sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now
+  puts params
+  if not params[:attachment].empty? and not params[:attachment] =~ /.*\.(jpg|jpeg)$/i
+    flash[:notice] = "Failed to sheet. Attachment must be a jpg"
+    redirect to('/')
+  end
+  sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now, :attachment => params[:attachment]
   sheet[:user_id] = current_user[:id]
   sheet.save
   flash[:notice] = "Sheet has been made"
