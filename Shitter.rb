@@ -78,10 +78,12 @@ get '/' do
 end
 
 get '/login' do
+  redirect to('/') unless not logged_in?
   haml :login
 end
 
 post '/login' do
+  redirect to('/') unless not logged_in?
   # log that bitch in
   user = User[:username => params[:username]]
   redirect to('/login') unless user
@@ -136,15 +138,15 @@ get '/search' do
 end
 
 get '/users/:id/edit' do
-  protect(params[:id])
   must_be_logged_in
+  protect(params[:id])
   @user = User[params[:id]]
   haml :edit
 end
 
 post '/users/:id' do
-  protect(params[:id])
   must_be_logged_in
+  protect(params[:id])
   upd = {}
   [:location, :aboutme].each do |k|
     upd["#{k}"] = sanity(params["#{k}"])
