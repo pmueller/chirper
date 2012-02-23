@@ -42,7 +42,7 @@ helpers do
 
   def login(user)
     #response.set_cookie(S.user_cookie_key, :value => user.cookie)
-    response.set_cookie(S.hash_cookie_key, :value => user[:hash])
+    response.set_cookie(S.hash_cookie_key, {:value => user[:hash], :path => '/'})
   end
 
   def logout
@@ -67,7 +67,7 @@ helpers do
   end
 
   def protect(id)
-    redirect to('/') unless User[id] == current_user
+    redirect to('/') unless id.to_i == current_user[:id]
   end
 end
 
