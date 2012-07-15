@@ -17,7 +17,7 @@
   - @sheets.each do |s|
     .sheet.clear
       .sheet_content
-        = s.content
+        = s.content.split(" ").collect{ |word| word.gsub(/^(http:\/\/\S+)/) {|url| "<a href='#{url}'>#{url}</a>"} }.join(" ")
       .sheet_user
         = User[s[:user_id]][:username]
       -if not s[:attachment].empty?
