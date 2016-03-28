@@ -5,7 +5,7 @@ It was originally developed for use at [UFSIT](http://ufsit.org/)
 ## Running Locally
 - You need `ruby >= 1.9.3` and `bundler`
 - `bundle install`
-- `bundle exec ruby Shitter.rb`
+- `bundle exec ruby Shitter.rb -e production`
 - Go to `localhost:4567` in a browser
 
 ## Vulnerabilities
