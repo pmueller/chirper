@@ -6,6 +6,11 @@ It was originally developed for use at [UFSIT](http://ufsit.org/)
 - You need `ruby >= 1.9.3` and `bundler`
 - `bundle install`
 - `bundle exec ruby Shitter.rb`
+- Go to `localhost:4567` in a browser
 
 ## Vulnerabilities
-There should be 2 XSS and 1 CSRF vulnerabilities right now. If you're able to find more then open an issue on this repo and tell me how you did it!
+There should be 3 exploitable vulnerablities in total:
+- 2 XSS
+- 1 CSRF
+
+If you're able to find more then open an issue on this repo and tell me how you did it!
