@@ -2,6 +2,7 @@ require 'sinatra'
 require 'haml'
 require 'sequel'
 require 'rack-flash'
+require 'ostruct'
 
 enable :sessions
 use Rack::Flash, :sweep => true
@@ -15,7 +16,6 @@ not_found do
 end
 
 configure do
-  require 'ostruct'
   S = OpenStruct.new(
     :user_cookie_key => 'shitter_user_cookie',
     :hash_cookie_key => 'shitter_hash_cookie'
@@ -25,7 +25,7 @@ configure do
   unless db.table_exists?(:sheets)
     db.create_table :sheets do
       primary_key :id
-      Fixnum :user_id 
+      Fixnum :user_id
       String :content
       String :attachment
       timestamp :created_at
@@ -136,21 +136,21 @@ post '/register' do
   end
 
   if not params[:password].empty? and params[:password] == params[:password_confirm] and not params[:username].empty?
-    hash = User.hash_val(params[:username], params[:password]) 
+    hash = User.hash_val(params[:username], params[:password])
     user = User.new :username => params[:username], :hash => "#{hash}", :aboutme => params[:aboutme], :location => params[:location]
     if user.save
       login(user)
       flash[:notice] = "Welcome to Shitter, #{user[:username]}"
       redirect to('/')
     else
-      flash[:notice] = "There was an error registering" 
+      flash[:notice] = "There was an error registering"
       redirect to('/register')
     end
   else
     flash[:notice] = "There was an error registering"
     redirect to('/register')
   end
-   
+
 end
 
 get '/search' do
@@ -206,7 +206,7 @@ post '/sheets' do
     end
     filename = params[:attachment][:filename]
   end
-  sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now, :attachment => filename 
+  sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now, :attachment => filename
   sheet[:user_id] = current_user[:id]
   sheet.save
   flash[:notice] = "Sheet has been made"
