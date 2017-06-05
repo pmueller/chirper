@@ -1,8 +1,8 @@
-require 'sinatra/base'
 require 'haml'
-require 'sequel'
-require 'rack-flash'
 require 'ostruct'
+require 'rack-flash'
+require 'sequel'
+require 'sinatra/base'
 
 class Shitter < Sinatra::Base
   enable :sessions
@@ -46,6 +46,7 @@ class Shitter < Sinatra::Base
   end
 
   $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
+  # sublassing Sequel::Model fails unless db is already connected
   require 'sheet'
   require 'user'
 
@@ -161,7 +162,7 @@ class Shitter < Sinatra::Base
       @results = []
     else
       @search_term = search_sanity(@search_term)
-      @results = Sheet.filter(:content.like("%#{@search_term}%"))
+      @results = Sheet.filter(Sequel.like(:content, "%#{@search_term}%"))
     end
     haml :search
   end
