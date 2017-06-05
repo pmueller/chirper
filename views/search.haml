@@ -8,7 +8,8 @@
   %ul
     - @results.each do |r|
       .sheet.clear
-        .sheet_content
+        .user
+          %small
+            %strong @#{User[r[:user_id]][:username]}
+        .content
           = r.content
-        .sheet_user
-          = User[r[:user_id]][:username]

@@ -1,25 +1,26 @@
 %form{ :action => '/search', :method => :get, :id => "search" }
-  %input{ :type => 'text_area', :name => 'search_term', :id => "search_bar" }
+  %input{ :type => 'text_area', :name => 'search_term', :id => "search_bar", :placeholder => 'Search for sheet...' }
   %input{ :type => 'submit', :value => 'Search' }
 
 %form{ :action => '/sheets', :method => :post, :id => 'new_sheet', :enctype => 'multipart/form-data'}
-  %textarea{ :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);", :id => "sheet_text_field", :rows => 2}
+  %textarea{ :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);", :id => "sheet_text_field", :rows => 2, :placeholder => "Tell the world your sheet..."}
   %br
-  Attach image: 
+  Attach image:
   %input{:type => 'file', :name => :attachment }
   %br
   %input{:type => 'text', :readonly => true, :size => 2, :value => 70, :name => 'countdown'}
   characters left
-  %input{ :type => 'submit', :value => 'Sheet it!', :class => "button" }
+  %input{ :type => 'submit', :value => 'Sheet it!', :class => "button", :id => "sheet_btn" }
 
 - unless @sheets.empty?
   %h2 Sheet river
   - @sheets.each do |s|
     .sheet.clear
-      .sheet_content
+      .user
+        %small
+          %strong @#{User[s[:user_id]][:username]}
+      .content
         = s.content.split(" ").collect{ |word| word.gsub(/^(http:\/\/\S+)/) {|url| "<a href='#{url}'>#{url}</a>"} }.join(" ")
-      .sheet_user
-        = User[s[:user_id]][:username]
       -if not s[:attachment].empty?
         .sheet_attachment
           %a{ :href => "/pics/#{s[:attachment]}" } See attachment

@@ -9,11 +9,11 @@ class Shitter < Sinatra::Base
   use Rack::Flash, :sweep => true
 
   error do
-    'Bummer dude... there was an error'
+    '500 error!'
   end
 
   not_found do
-    'Bummer dude... 404'
+    '404 not found'
   end
 
   configure do
@@ -77,7 +77,7 @@ class Shitter < Sinatra::Base
       logged_in? ? User[:hash => request.cookies[S.hash_cookie_key]] : nil
     end
 
-    def must_be_logged_in
+    def ensure_user_logged_in
       if not logged_in?
         flash[:notice] = "You must be logged in to do this"
         redirect to('/login')
@@ -93,7 +93,8 @@ class Shitter < Sinatra::Base
   end
 
   get '/' do
-    must_be_logged_in
+    ensure_user_logged_in
+
     @sheets = Sheet.reverse_order(:created_at)
     haml :index
   end
@@ -105,7 +106,6 @@ class Shitter < Sinatra::Base
 
   post '/login' do
     redirect to('/') unless not logged_in?
-    # log that bitch in
     user = User[:username => params[:username]]
     if not user
       flash[:notice] = "Login failed"
@@ -122,7 +122,8 @@ class Shitter < Sinatra::Base
   end
 
   get '/logout' do
-    must_be_logged_in
+    ensure_user_logged_in
+
     logout
     flash[:notice] = "You have been logged out"
     redirect to('/')
@@ -137,7 +138,7 @@ class Shitter < Sinatra::Base
       params["#{k}"] = sanity(params["#{k}"])
     end
 
-    if not params[:password].empty? and params[:password] == params[:password_confirm] and not params[:username].empty?
+    if !params[:password].empty? && params[:password] == params[:password_confirm] && !params[:username].empty?
       hash = User.hash_val(params[:username], params[:password])
       user = User.new :username => params[:username], :hash => "#{hash}", :aboutme => params[:aboutme], :location => params[:location]
       if user.save
@@ -156,7 +157,8 @@ class Shitter < Sinatra::Base
   end
 
   get '/search' do
-    must_be_logged_in
+    ensure_user_logged_in
+
     @search_term = params[:search_term]
     if @search_term.nil?
       @results = []
@@ -168,14 +170,16 @@ class Shitter < Sinatra::Base
   end
 
   get '/users/:id/edit' do
-    must_be_logged_in
+    ensure_user_logged_in
+
     protect(params[:id])
     @user = User[params[:id]]
     haml :edit
   end
 
   post '/users/:id' do
-    must_be_logged_in
+    ensure_user_logged_in
+
     protect(params[:id])
     upd = {}
     [:location, :aboutme].each do |k|
@@ -195,8 +199,8 @@ class Shitter < Sinatra::Base
   end
 
   post '/sheets' do
-    # someone made a sheet
-    must_be_logged_in
+    ensure_user_logged_in
+
     if !params[:attachment].nil? &&  !params[:attachment].empty? &&  !(params[:attachment][:filename] =~ /.*\.(jpg|jpeg)$/i)
       flash[:notice] = "Failed to sheet. Attachment must be a jpg"
       redirect to('/')
