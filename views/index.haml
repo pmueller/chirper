@@ -2,27 +2,27 @@
   %input{ :type => 'text_area', :name => 'search_term', :id => "search_bar", :placeholder => 'Search for chirp...' }
   %input{ :type => 'submit', :value => 'Search' }
 
-%form{ :action => '/sheets', :method => :post, :id => 'new_sheet', :enctype => 'multipart/form-data'}
-  %textarea{ :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);", :id => "sheet_text_field", :rows => 2, :placeholder => "Chirp to the world..."}
+%form{ :action => '/chirps', :method => :post, :id => 'new_chirp', :enctype => 'multipart/form-data'}
+  %textarea{ :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);", :id => "chirp_text_field", :rows => 2, :placeholder => "Chirp to the world..."}
   %br
   Attach image:
   %input{:type => 'file', :name => :attachment }
   %br
   %input{:type => 'text', :readonly => true, :size => 2, :value => 70, :name => 'countdown'}
   characters left
-  %input{ :type => 'submit', :value => 'Chirp it!', :class => "button", :id => "sheet_btn" }
+  %input{ :type => 'submit', :value => 'Chirp it!', :class => "button", :id => "chirp_btn" }
 
-- unless @sheets.empty?
+- unless @chirps.empty?
   %h2 Chirposphere
-  - @sheets.each do |s|
-    .sheet.clear
+  - @chirps.each do |s|
+    .chirp.clear
       .user
         %small
           %strong @#{User[s[:user_id]][:username]}
       .content
         = s.content.split(" ").collect{ |word| word.gsub(/^(http:\/\/\S+)/) {|url| "<a href='#{url}'>#{url}</a>"} }.join(" ")
       -if not s[:attachment].empty?
-        .sheet_attachment
+        .chirp_attachment
           %a{ :href => "/pics/#{s[:attachment]}" } See attachment
 
 :javascript

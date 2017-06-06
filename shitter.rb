@@ -23,8 +23,8 @@ class Chirper < Sinatra::Base
     )
 
     db = Sequel.connect('sqlite://s.db')
-    unless db.table_exists?(:sheets)
-      db.create_table :sheets do
+    unless db.table_exists?(:chirps)
+      db.create_table :chirps do
         primary_key :id
         Fixnum :user_id
         String :content
@@ -47,7 +47,7 @@ class Chirper < Sinatra::Base
 
   $LOAD_PATH.unshift(File.dirname(__FILE__) + '/lib')
   # sublassing Sequel::Model fails unless db is already connected
-  require 'sheet'
+  require 'chirp'
   require 'user'
 
   helpers do
@@ -95,7 +95,7 @@ class Chirper < Sinatra::Base
   get '/' do
     ensure_user_logged_in
 
-    @sheets = Sheet.reverse_order(:created_at)
+    @chirps = Chirp.reverse_order(:created_at)
     haml :index
   end
 
@@ -164,7 +164,7 @@ class Chirper < Sinatra::Base
       @results = []
     else
       @search_term = search_sanity(@search_term)
-      @results = Sheet.filter(Sequel.like(:content, "%#{@search_term}%"))
+      @results = Chirp.filter(Sequel.like(:content, "%#{@search_term}%"))
     end
     haml :search
   end
@@ -198,11 +198,11 @@ class Chirper < Sinatra::Base
     redirect to("/users/#{@user[:id]}/edit")
   end
 
-  post '/sheets' do
+  post '/chirps' do
     ensure_user_logged_in
 
     if !params[:attachment].nil? &&  !params[:attachment].empty? &&  !(params[:attachment][:filename] =~ /.*\.(jpg|jpeg)$/i)
-      flash[:notice] = "Failed to sheet. Attachment must be a jpg"
+      flash[:notice] = "Failed to chirp. Attachment must be a jpg"
       redirect to('/')
     end
     filename = ""
@@ -212,10 +212,10 @@ class Chirper < Sinatra::Base
       end
       filename = params[:attachment][:filename]
     end
-    sheet = Sheet.new :content => sanity(params[:content]), :created_at => Time.now, :attachment => filename
-    sheet[:user_id] = current_user[:id]
-    sheet.save
-    flash[:notice] = "Sheet has been made"
+    chirp = Chirp.new :content => sanity(params[:content]), :created_at => Time.now, :attachment => filename
+    chirp[:user_id] = current_user[:id]
+    chirp.save
+    flash[:notice] = "Chirp has been made"
     redirect to('/')
   end
 

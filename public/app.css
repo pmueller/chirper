@@ -46,7 +46,7 @@ nav {
   right: 30px;
 }
 
-#sheet_text_field {
+#chirp_text_field {
   width: 300px;
   resize: none;
 }
@@ -89,19 +89,19 @@ nav li a:hover {
   color: #fff;
 }
 
-.sheet {
+.chirp {
   padding: 15px;
   border-bottom: 1px solid rgba(51, 51, 51, 0.3);
 }
 
-.sheet .content {
+.chirp .content {
   word-wrap: break-word;
 }
 
-.sheet .user {
+.chirp .user {
   margin-bottom: 5px;
 }
 
-#sheet_btn {
+#chirp_btn {
   background-color: #fff00c;
 }

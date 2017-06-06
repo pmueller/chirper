@@ -7,7 +7,7 @@
 - else
   %ul
     - @results.each do |r|
-      .sheet.clear
+      .chirp.clear
         .user
           %small
             %strong @#{User[r[:user_id]][:username]}
