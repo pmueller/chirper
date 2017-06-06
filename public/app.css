@@ -31,7 +31,7 @@ a, a:visited {
 }
 
 #main h1 a, #main h1 a:visited {
-  color: #82370F;
+  color: #fff00c;
   font-size: 1.9em;
 }
 
@@ -103,6 +103,5 @@ nav li a:hover {
 }
 
 #sheet_btn {
-  background-color: #82370F;
-  color: white;
+  background-color: #fff00c;
 }

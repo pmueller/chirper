@@ -4,7 +4,7 @@ require 'rack-flash'
 require 'sequel'
 require 'sinatra/base'
 
-class Shitter < Sinatra::Base
+class Chirper < Sinatra::Base
   enable :sessions
   use Rack::Flash, :sweep => true
 
@@ -18,8 +18,8 @@ class Shitter < Sinatra::Base
 
   configure do
     S = OpenStruct.new(
-      :user_cookie_key => 'shitter_user_cookie',
-      :hash_cookie_key => 'shitter_hash_cookie'
+      :user_cookie_key => 'chirper_user_cookie',
+      :hash_cookie_key => 'chirper_hash_cookie'
     )
 
     db = Sequel.connect('sqlite://s.db')
@@ -143,7 +143,7 @@ class Shitter < Sinatra::Base
       user = User.new :username => params[:username], :hash => "#{hash}", :aboutme => params[:aboutme], :location => params[:location]
       if user.save
         login(user)
-        flash[:notice] = "Welcome to Shitter, #{user[:username]}"
+        flash[:notice] = "Welcome to Chirper, #{user[:username]}"
         redirect to('/')
       else
         flash[:notice] = "There was an error registering"
