@@ -2,16 +2,19 @@
   Edit your info
 
 %form{ :action => "/users/#{ @user[:id] }", :method => :post }
-  Password:
-  %input{ :type => "password", :name => 'password' }
-  %br 
-  About me: 
-  %br
-  %textarea{ :name => 'aboutme'}
-    = @user[:aboutme]
-  %br 
-  Location:
-  %input{ :type => "text", :name => 'location', :value => "#{@user[:location]}"}
-  %br 
-  %input{ :type => "submit", :value => "Update" }
+  .form-row
+    .label-col
+      Password:
+    %input{ :type => "password", :name => 'password' }
+  .form-row
+    .label-col
+      About me:
+    %textarea{ :name => 'aboutme'}
+      = @user[:aboutme]
+  .form-row
+    .label-col
+      Location:
+    %input{ :type => "text", :name => 'location', :value => "#{@user[:location]}"}
+  .label-col
+    %input{ :type => "submit", :value => "Update", :class => 'btn'}
 

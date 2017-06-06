@@ -2,22 +2,31 @@
   Register a new account
 
 %form{ :action => '/register', :method => :post }
-  Username: 
-  %input{ :type => "text", :name => 'username' }
-  %br
-  Password:
-  %input{ :type => "password", :name => 'password' }
-  %br
-  Password confirm:
-  %input{ :type => "password", :name => 'password_confirm' }
-  %br
-  About me:
-  %br
-  %textarea{ :name => 'aboutme' }
-  %br
-  Location:
-  %input{ :type => "text", :name => 'location' }
-  %br
-  %input{ :type => "submit", :value => "Register" }
+  .form-row
+    .label-col.wide
+      Username:
+    %input{ :type => "text", :name => 'username' }
+  .form-row
+    .label-col.wide
+      Password:
+    %input{ :type => "password", :name => 'password' }
+  .form-row
+    .label-col.wide
+      Password confirm:
+    %input{ :type => "password", :name => 'password_confirm' }
+  .form-row
+    .label-col.wide
+      About me:
+    %textarea{ :name => 'aboutme' }
+  .form-row
+    .label-col.wide
+      Location:
+    %input{ :type => "text", :name => 'location' }
+  .label-col.wide
+    %input{ :type => "submit", :value => "Register", :class => 'btn' }
 
-%p Note: your password is safe with us. With our Revolutionary Authentication Engine(c) we never store your password, so there is no chance of it getting stolen!
+%p
+  %strong Note:
+  your password is safe with us. With our
+  %strong Revolutionary Authentication Engine(c)
+  we never store your password, so there is no chance of it getting stolen!

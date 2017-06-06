@@ -28,6 +28,7 @@ a, a:visited {
   font-size: 1.9em;
   text-transform: uppercase;
   margin-bottom: 0;
+  margin-top: 0;
 }
 
 #main h1 a, #main h1 a:visited {
@@ -154,7 +155,21 @@ nav li a:hover {
 
 .flash {
   text-align: center;
-  padding: 2px 0;
-  color: #5a3126;
-  background-color: #ee481e;
+  padding: 3px 0;
+  color: #cadfde;
+  background-color: #1148dd;
+}
+
+.form-row {
+  margin-bottom: 5px;
+}
+
+.label-col {
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+}
+
+.label-col.wide {
+  width: 150px;
 }

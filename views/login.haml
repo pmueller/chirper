@@ -1,10 +1,13 @@
 %h2
   Log in to your account
 %form{ :action => '/login', :method => :post }
-  Username: 
-  %input{ :type => "text", :name => 'username' }
-  %br
-  Password: 
-  %input{ :type => "password", :name => 'password' }
-  %br
-  %input{ :type => "submit", :value => "Login" }
+  .form-row
+    .label-col
+      Username:
+    %input{ :type => "text", :name => 'username' }
+  .form-row
+    .label-col
+      Password:
+    %input{ :type => "password", :name => 'password' }
+  .label-col
+    %input{ :type => "submit", :value => "Login", :class => 'btn' }

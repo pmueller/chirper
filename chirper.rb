@@ -3,6 +3,7 @@ require 'ostruct'
 require 'rack-flash'
 require 'sequel'
 require 'sinatra/base'
+require 'pry'
 
 class Chirper < Sinatra::Base
   enable :sessions
