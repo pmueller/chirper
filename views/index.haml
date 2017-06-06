@@ -1,19 +1,21 @@
 %form{ :action => '/search', :method => :get, :id => "search" }
-  %input{ :type => 'text_area', :name => 'search_term', :id => "search_bar", :placeholder => 'Search for chirp...' }
-  %input{ :type => 'submit', :value => 'Search' }
+  %input{ :type => 'text_area', :name => 'search_term', :id => "search_bar", :placeholder => 'Search chirposphere...' }
+  %input{ :type => 'submit', :value => 'Search', :class => 'btn' }
 
 %form{ :action => '/chirps', :method => :post, :id => 'new_chirp', :enctype => 'multipart/form-data'}
   %textarea{ :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);", :id => "chirp_text_field", :rows => 2, :placeholder => "Chirp to the world..."}
-  %br
-  Attach image:
-  %input{:type => 'file', :name => :attachment }
-  %br
-  %input{:type => 'text', :readonly => true, :size => 2, :value => 70, :name => 'countdown'}
-  characters left
-  %input{ :type => 'submit', :value => 'Chirp it!', :class => "button", :id => "chirp_btn" }
+  .below
+    %small
+      %input{:type => 'text', :readonly => true, :size => 2, :value => 70, :name => 'countdown'}
+      characters left
+    %small{ :class => 'picker' }
+      Attach image:
+      %input{:type => 'file', :name => :attachment }
+  .chrip-it
+    %input{ :type => 'submit', :value => 'Chirp it!', :class => "btn", :id => "chirp_btn" }
 
 - unless @chirps.empty?
-  %h2 Chirposphere
+  %h2 The Chirposphere
   - @chirps.each do |s|
     .chirp.clear
       .user
