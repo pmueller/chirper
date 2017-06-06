@@ -1,11 +1,11 @@
-# Shitter
-Shitter is a purposefully insecure app for learning about and practicing web haxxing.
+# Chirper
+Chirper is a purposefully insecure app for learning about and practicing web haxxing.
 It was originally developed for use at [UFSIT](http://ufsit.org/)
 
 ## Running Locally
-- You need `ruby >= 1.9.3` and `bundler`
+- You need `ruby >= 2.0` and `bundler`
 - `bundle install`
-- `bundle exec ruby Shitter.rb -e production`
+- `bundle exec ruby chirper.rb -e production`
 - Go to `localhost:4567` in a browser
 
 ## Vulnerabilities
