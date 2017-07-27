@@ -3,6 +3,10 @@
 
 %form{ :action => "/users/#{ @user[:id] }", :method => :post }
   .form-row
+    - # CSRF weakness here because there is no token protecting csrf on the form and there is no
+    - # need to put in the current password to change passwords.
+    - # Could take over the password using a form submitted from another site if the victim is
+    - # logged in to chirper (has a cookie)
     .label-col
       Password:
     %input{ :type => "password", :name => 'password' }

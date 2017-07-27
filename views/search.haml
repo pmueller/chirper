@@ -1,6 +1,8 @@
 %p
   Here are the chirps that matched your search term
   %b
+    = # Reflected XSS here because @search_term is not properly sanitized.
+    = # See `search_sanity` for the root of the issue
     =@search_term
 -if @results.empty?
   %p No results found...

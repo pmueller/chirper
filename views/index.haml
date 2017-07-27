@@ -3,6 +3,7 @@
   %input{ :type => 'submit', :value => 'Search', :class => 'btn' }
 
 %form{ :action => '/chirps', :method => :post, :id => 'new_chirp', :enctype => 'multipart/form-data'}
+  - # not really a vuln, but the character count is easily bypassed, which can help with exploiting other things
   %textarea{ :name => 'content', :onKeyDown => "l(this.form.content, this.form.countdown, 70);", :onKeyUp => "l(this.form.content, this.form.countdown, 70);", :id => "chirp_text_field", :rows => 2, :placeholder => "Chirp to the world..."}
   .below
     %small

@@ -71,6 +71,7 @@ class Chirper < Sinatra::Base
     end
 
     def search_sanity(input)
+      # Creates reflected XSS due to improper sanitization.
       input.gsub(/<[^<>]*>/, "")
     end
 
