@@ -17,3 +17,6 @@ If you're able to find more then open an issue on this repo and tell me how you 
 
 It also has weak authentication (MD5 without a salt). Combined with one of the other vulnerabilites
 this could lead to stealing of anyone's account and reversal of plaintext passwords.
+
+## Disclaimer
+Don't ever run this open to internet traffic, because... it has vulnerabilities!
