@@ -53,7 +53,7 @@ class Chirper < Sinatra::Base
 
   helpers do
     def logged_in?
-      not request.cookies[S.hash_cookie_key].nil?
+      !request.cookies[S.hash_cookie_key].nil?
     end
 
     def login(user)
@@ -80,14 +80,14 @@ class Chirper < Sinatra::Base
     end
 
     def ensure_user_logged_in
-      if not logged_in?
+      unless logged_in?
         flash[:notice] = "You must be logged in to do this"
         redirect to('/login')
       end
     end
 
     def protect(id)
-      if not id.to_i == current_user[:id]
+      if id.to_i != current_user[:id]
         flash[:notice] = "You are not authorized to view this"
         redirect to('/')
       end
@@ -102,14 +102,14 @@ class Chirper < Sinatra::Base
   end
 
   get '/login' do
-    redirect to('/') unless not logged_in?
+    redirect to('/') if logged_in?
     haml :login
   end
 
   post '/login' do
-    redirect to('/') unless not logged_in?
+    redirect to('/') if logged_in?
     user = User[:username => params[:username]]
-    if not user
+    unless user
       flash[:notice] = "Login failed"
       redirect to('/login')
     end
@@ -190,7 +190,7 @@ class Chirper < Sinatra::Base
 
     @user = User[params[:id]]
 
-    if not params[:password].empty?
+    if !params[:password].empty?
       upd[:hash] = User.hash_val(@user[:username], params[:password])
     end
     @user.update(upd)
@@ -208,7 +208,7 @@ class Chirper < Sinatra::Base
       redirect to('/')
     end
     filename = ""
-    if not params[:attachment].nil?
+    unless params[:attachment].nil?
       File.open("./public/#{params[:attachment][:filename]}", "w") do |f|
         f.write(params[:attachment][:tempfile].read)
       end

@@ -24,7 +24,7 @@
           %strong @#{User[s[:user_id]][:username]}
       .content
         = s.content.split(" ").collect{ |word| word.gsub(/^(http:\/\/\S+)/) {|url| "<a href='#{url}'>#{url}</a>"} }.join(" ")
-      -if not s[:attachment].empty?
+      - unless s[:attachment].empty?
         .chirp_attachment
           %a{ :href => "/pics/#{s[:attachment]}" } See attachment
 

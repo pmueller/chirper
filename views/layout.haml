@@ -18,7 +18,7 @@
             %a{ :href => '/login' } Login
           %li
             %a{ :href => '/register' } Register
-    - if not flash[:notice].nil?
+    - unless flash[:notice].nil?
       .flash
         = flash[:notice]
     .page-content
